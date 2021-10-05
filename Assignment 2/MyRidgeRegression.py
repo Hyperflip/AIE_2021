@@ -30,7 +30,7 @@ class MyRidgeRegression:
 
         # calculate derivates used to descend gradient
         dFeature_weights = (-(2 * self.X.T.dot(self.y - y_pred)) + (2 * self.l2_lambda * self.feature_weights)) / self.n_samples
-        dIntercept_weight = -(2 * np.sum(self.y - y_pred) / self.m)
+        dIntercept_weight = -(2 * np.sum(self.y - y_pred) / self.n_samples)
 
         # update weights
         self.feature_weights = self.feature_weights - self.learning_rate * dFeature_weights
