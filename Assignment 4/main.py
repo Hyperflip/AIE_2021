@@ -22,6 +22,6 @@ spam = [
 
 mySpamAgent = MySpamAgent(non_spam, spam)
 
-X_test = 'Congratulations customer you won exclusive offer'
+X_test = 'Congratulations I have an exclusive holiday offer'
 
 print(mySpamAgent.predict(X_test))
