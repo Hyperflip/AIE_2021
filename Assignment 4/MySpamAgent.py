@@ -42,6 +42,7 @@ class MySpamAgent:
         for word in text.split():
             if word not in self.non_spam_word_prob:
                 temp_prob = 1 / self.non_spam_total_count
+                self.non_spam_total_count += 1
                 non_spam_prob *= temp_prob
                 continue
             non_spam_prob *= self.non_spam_word_prob[word]
@@ -49,6 +50,7 @@ class MySpamAgent:
         for word in text.split():
             if word not in self.spam_word_prob:
                 temp_prob = 1 / self.spam_total_count
+                self.spam_total_count += 1
                 spam_prob *= temp_prob
                 continue
             spam_prob *= self.spam_word_prob[word]
