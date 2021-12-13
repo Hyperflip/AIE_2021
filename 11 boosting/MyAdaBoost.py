@@ -114,7 +114,6 @@ class MyAdaBoost:
 
             # choose best overall stump of iteration
             chosen_stump = min(possible_stumps, key=lambda x: x.impurity)
-            self.stumps.append(chosen_stump)
 
             # calculate influence of stump and adjust sample weights
             incorrect = 0
@@ -129,12 +128,15 @@ class MyAdaBoost:
 
             total_error = incorrect / self.X.shape[0]
             influence = 0.5 * mt.log((1 - total_error) / total_error)
+            chosen_stump.influence = influence
             # adjust incorrectly classified sample weights
             for i in range(self.X.shape[0]):
                 if i in incorrect_indices:
                     self.sample_weights[i] = mt.e ** influence
                 else:
                     self.sample_weights[i] = mt.e ** -influence
+
+            self.stumps.append(chosen_stump)
 
             # normalize weights
             weight_sum = 0
@@ -152,8 +154,8 @@ class MyAdaBoost:
 
     def predict(self, x):
         # majority vote prediction
-        predictions = []
+        predictions = {}
         for stump in self.stumps:
-            #x_adj = x.reshape(1, -1)
-            predictions.append((stump.predict(x)))
-        return Counter(predictions).most_common(1)[0][0]
+            prediction = stump.predict(x)
+            predictions[prediction] = predictions.get(prediction, 0) + stump.influence
+        return max(predictions, key=predictions.get)
