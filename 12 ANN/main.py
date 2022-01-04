@@ -8,6 +8,7 @@ from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPRegressor
+import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
 
@@ -66,7 +67,7 @@ if __name__ == '__main__':
         for reg_name in regressors.keys():
 
             per_split_rmsd = []
-            for _ in range(n_splits):
+            for i in range(n_splits):
                 # split into train and test
                 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
 
@@ -86,6 +87,16 @@ if __name__ == '__main__':
 
         per_data_rmsds[data_name] = per_reg_rmsds
 
+    # time for plotting
+    for data_name in per_data_rmsds.keys():
+        for i, reg_name in enumerate(per_data_rmsds[data_name]):
+            mean = np.mean(per_data_rmsds[data_name][reg_name])
+            std = np.std(per_data_rmsds[data_name][reg_name])
+
+            plt.bar(i, mean, yerr=std)
+        plt.xticks(range(len(regressors)), labels=list(regressors.keys()))
+        plt.title(data_name)
+        plt.show()
 
 
 
